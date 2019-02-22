@@ -4,10 +4,17 @@ import pandas as pd
 from sklearn.preprocessing import Imputer
 from sklearn.preprocessing import LabelEncoder
 
+
+# 显示所有行
+# pd.set_option('display.max_rows', None)
+# 显示所有列
+pd.set_option('display.max_columns', None)
+
 # pandas 读取数据
-test = pd.read_csv('../data/train.csv', header=0)
-id=test.get('Id')
-# print(id)
+test_csv = pd.read_csv('../data/train.csv', header=0)
+# 获取列标签
+head_value = test_csv.columns.values
+# print(test_csv)
 
 # Imputer 填补数据
 # missing_values 设置缺失值，可以为整数或者NaN
@@ -23,3 +30,17 @@ imp.fit(test_array)
 print(test_array)
 x = imp.transform(test_array)
 print(imp.transform(x))
+
+# LabelEncoder 处理类别型数据
+# LabelEncoder是对不连续的数字或者英文等从1～n进行编号，比如这里有一批标签｛A,A,B,B,C,D,D｝
+# 那么这里标签的种类就有 ：A  B  C  D,且是根据字典排序的，那么相应的标签对应的序号便是 0，1，2，3
+# 所以同理｛D，A,A,C,B｝=> {3,0,0,2,1}
+label = LabelEncoder()
+test_label2 = test_csv.get('MSZoning')
+print("标签值：%s" % test_label2)
+label_result = label.fit(test_label2)
+result = label_result.transform(test_label2)
+print("标签 %s:" % label.classes_)
+print("标准话后：%s" % result)
+
+
